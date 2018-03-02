@@ -1,6 +1,7 @@
 require 'gli'
 require 'yaml'
 require 'nokogiri'
+require 'iniparse'
 
 include GLI::App
 
@@ -8,7 +9,7 @@ program_desc 'A cli for managing bookmarks with tags'
 
 
 pre do |global_options,command,options,args|
-  $file = File.expand_path("bookmarks.yml", File.dirname(__FILE__))
+  $file = file()
   $bookmarks = YAML.load(File.read($file))
   $bookmarks["bookmarks"] ||= []
 end
@@ -71,6 +72,17 @@ end
 
 def save
   File.write($file, YAML.dump($bookmarks))
+end
+
+def file
+  config_file = File.expand_path(".bookmarks", File.dirname(__FILE__))
+  default = File.expand_path("bookmarks.yml", File.dirname(__FILE__))
+  if File.exists? config_file
+    config = IniParse.parse(File.read(config_file))
+    config["global"]["bookmarks_file"] || default
+  else
+    default
+  end
 end
 
 exit run(ARGV)

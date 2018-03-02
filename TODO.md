@@ -2,4 +2,5 @@ TODO
 ====
 
 * Regex support for searching
-* Allow bookmarks.yml to be stored somewhere else eg in another git repo
+* Support for boolean logic on queries
+* Support for editing the file via eg `$EDITOR file`

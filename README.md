@@ -46,3 +46,10 @@ to enable usage from anywhere as
 ```sh
 bm --help
 ```
+
+Using a different location for the bookmarks file
+-------------------------------------------------
+
+If you wish to keep your bookmarks file in a different location (eg a git repo)
+then you can specify the location in a .bookmarks file in the same directory
+as the cli (see .bookmarks.sample for an example)

@@ -21,6 +21,13 @@ command :list do |c|
   end
 end
 
+desc 'Edit the bookmark file'
+command :edit do |c|
+  c.action do |global_options, options, args|
+    exec "#{ENV['EDITOR']} #{$file}"
+  end
+end
+
 desc 'Add a bookmark'
 arg '<name>'
 arg '<url>'

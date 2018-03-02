@@ -39,5 +39,10 @@ bundle
 ```
 
 You might want to consider adding this directory to your path (in .bashrc, etc):
-` export PATH=$PATH:$HOME/dev/bookmarks `
-to enable usage from anywhere as `bm --help`
+```sh
+export PATH=$PATH:$HOME/dev/bookmarks
+```
+to enable usage from anywhere as
+```sh
+bm --help
+```

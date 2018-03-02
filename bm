@@ -1,1 +1,2 @@
-bundle exec ruby cli.rb "$@"
+DIR=`dirname $0`
+BUNDLE_GEMFILE=$DIR/Gemfile bundle exec ruby $DIR/cli.rb "$@"

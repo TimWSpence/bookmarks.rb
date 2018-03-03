@@ -48,14 +48,14 @@ command :search do |c|
   c.action do |global_options, options, args|
     term = args.shift
     filter = if term[0] == '/' && term[-1] == '/'
-      r = Regexp.new term[1..-2]
+      r = Regexp.new(term[1..-2], Regexp::EXTENDED | Regexp::IGNORECASE)
       proc { |b| r === b["name"] ||
 	     r === b["url"] ||
 	     b["tags"].any? { |t| r === t } }
     else
-      proc { |b| (b["name"].include? term) ||
-	     (b["url"].include? term) ||
-	     (b["tags"].any? { |t| t.include? term }) }
+	    proc { |b| (b["name"].downcase.include? term) ||
+	    (b["url"].downcase.include? term) ||
+	    (b["tags"].any? { |t| t.downcase.include? term }) }
     end
     $bookmarks["bookmarks"].select(&filter).each { |b| puts YAML.dump(b) }
   end
@@ -80,7 +80,7 @@ def import(path)
   str = File.read(path) 
   doc = Nokogiri::HTML::fragment(str)
   doc.xpath("./dl//a").each do |a|
-    add(a.text, a["href"], [])
+    add(a.text, a["href"])
   end
 end
 

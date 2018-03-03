@@ -43,13 +43,21 @@ command :add do |c|
 end
 
 desc 'Search for bookmarks'
-arg 'search term'
+arg 'search term - may be a substring or a regex specified via /<pattern>/'
 command :search do |c|
   c.action do |global_options, options, args|
     term = args.shift
-    $bookmarks["bookmarks"].select do |b|
-      b["name"] == term || (b["tags"].include? (term))
-    end.each { |b| puts YAML.dump(b) }
+    filter = if term[0] == '/' && term[-1] == '/'
+      r = Regexp.new term[1..-2]
+      proc { |b| r === b["name"] ||
+	     r === b["url"] ||
+	     b["tags"].any? { |t| r === t } }
+    else
+      proc { |b| (b["name"].include? term) ||
+	     (b["url"].include? term) ||
+	     (b["tags"].any? { |t| t.include? term }) }
+    end
+    $bookmarks["bookmarks"].select(&filter).each { |b| puts YAML.dump(b) }
   end
 end
 
